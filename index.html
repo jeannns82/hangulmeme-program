@@ -1,600 +1,129 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>한글그림-한글공방</title>
-<meta name = "viewport" content = "width=device-width,height=device-height, initial-scale=1, minimum-scale=0.75, user-scalable=no">
-<!-- <meta name="viewport" content="width=700,height=500" /> -->
-
-<script  src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript" src="j.js"></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
-<!-- <script type="text/javascript" src="https://github.com/niklasvh/html2canvas-proxy-nodejs"></script> -->
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="c.css">
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<style type="text/css">
-body{
-	overflow-x:hidden;
-	overflow-y:hidden;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>K-Code Art | 한글 그림 생성기</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="c.css">
+  <link rel="stylesheet" href="navigation.css">
+  <link rel="stylesheet" href="modern-ui.css">
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+  <script src="j.js"></script>
 </head>
-<!-- <body class="container" style="margin:0; background-image:url('images/pattern.png'); position: absolute;"> -->
-<body class="container" style="margin:0; background-color: rgb(222,222,222); position: absolute;">
-<!--상단-->
-<div style="position:absolute; width:100%; height:8.5%;">
-	<img src="images/제목.png" width="25%" height="29.415%" alt="" style="position:absolute;z-index:1; left: 37.5%; bottom: 14%;"/>
-</div>
-<!--중단-->
-<div style="position:absolute;width: 100%; height:33.46%; top:8.5%;">
-	<!--왼쪽-->
-	<div style="position:absolute; width:19%; height:100%;">
-		<img src="images/킹세종.png" width="45%" height="45%" alt="" style="position:absolute;z-index:1; right: 5%; bottom: -2.5%;"/>
-	</div>
-	<!--가운데-->
-	<div style="position:absolute; width:62%; height:100%; left:19%;">
-		<!--글씨쓰는 채팅 div-->
-		<div style="position:absolute;width:50%; height:92%;">
-			<img src="images/한글창.png" width="99.3%" height="100%" alt="" style="position: absolute;z-index:1; right: 0.7%;"/>
-			<div style="position: relative; width: 100%; height: 5%;">
-				<form action="JavaScript:on_change();" style="ime-mode:active;">
-					<p class="result3" title="총 글자수" style="font-size:0.8vw; position: absolute; z-index:2; left:0.5%; width:5%;bottom:25%; height:5%; color:rgb(91,178,170);text-align:center;float:left;">dsd</p>
-					<br>
-				</form>
-			</div>
-			<textarea class="input" rows="2" cols="100" id="t" name="fname" maxlength="16" style="ime-mode:active;
-				font-size:1.4vw; word-break:break-all;z-index:3;position:absolute;
-				left: 10%; top: 46%; width: 80%; height: 60%;
-				background-color: rgba( 255, 255, 255, 0 );  
-				border: 0px solid red;overflow: auto;
-				text-align:center;resize:none;font-family:'Noto Serif KR', serif;" 
-			placeholder ="한글을 입력하면 그림이 됩니다" wrap="VIRTUAL"></textarea>
-		</div>
-		<!--그림 그려지는 div-->
-		<div style="position: relative;width: 50%; height:92%; left: 50%;">
-			<img class="img_screen" src="images/한글창.png" width="99.3%" height="100%" alt="" style="position: absolute;z-index:1; left:0.7%; bottom: 0%;"/>
-			<div class="img_option" style="position:absolute; width: 100%; height: 5%;">
-				<img id="capture" src="images/다운로드_마우스온.png" width="2.8%" height="63%" title="저장" alt=""style="position: absolute; right: 3%; top: 23%; z-index: 6;"/>
-				<!-- <img class="check_btn" src="images/이미지꼴 선택 화살표.png" width="2.5%" height="50%" alt=""style="position: absolute; left: 3.5%; top: 27%; z-index: 6;"/> -->
-				<select class="selet_font" id="style_kind" title="그림꼴 선택"
-				style="background:url('images/이미지꼴 선택 화살표.png') no-repeat; background-size:9% 65%; background-position:2%,0%,0%,3.5%; position:absolute; z-index:2; left:3.5%; top:13%;
-					font-size: calc(0.9vw);
-					font-family:'Noto Sans CJK',sans-serif;
-					text-align : justify;
-					text-align-last:center;
-					-moz-text-align-last:center;
-					resize:none;
-					width:25%;
-					line-height: normal; /* line-height 초기화 */  
-					border: 0;
-					opacity: 20;  /* 숨기기 */ 
-					filter: alpha(opacity=0);  /* IE8 숨기기 */
-					columns: #000000;
-					-webkit-appearance: none;  /* 네이티브 외형 감추기 */ 
-					-moz-appearance: none;
-					appearance: none;">
-					<option value="0">색동</option>
-					<option value="1">사각 조각보</option>
-					<option value="2">팔각 조각보</option>
-					<option value="3">원형 조각보</option>
-					<option value="4">물수제비</option>
-					<option value="5">한울림</option>
-					<option value="6">입방체</option>
-					<option value="7">단청</option>
-					<option value="8">만화경</option>
-					<option value="9">세모</option>
-				</select>
-			</div>
-			<div id="captureArea" style="position: relative; top: 5%; left: 3.5%; width:93.341%; height:94%; text-align: center;border: 0px solid red;z-index:1;">
-			<!-- <div id="captureArea" style="position: relative; top: 5%; left: 1%; width:98.6%; height:95%; text-align: center;border: 0px solid red;z-index:1;"> -->
-				<div class="result2" style="position:relative; left:50%; top: 40%; width:auto; height:80%; text-align: center;border: 0px solid black;z-index:2;display:inline-block;"></div>
-				<p class="result" id="t_test" style="position:absolute; bottom:0%; left:10%; width:80%; font-family: 'Noto Serif KR', serif; font-size:0.6vw; text-align:center; color:rgb(178, 178, 178); display: none;"></p>
-			</div>
-			<!-- <div  id="captureArea" style="position:absolute; top: 5%; left: 3.5%; width:93.341%; height:94%; text-align: center;border: 0px solid red;z-index:1;"></div> -->
-		</div>
-		<!--글씨 버튼 div-->
-		<div style="position:absolute;width: 100%; height:8%; top: 92%;">
-			<div>
-				<img src="button/ㄱ_1.png" id="btn1" width="4.06%" height="94%" alt=""style="position: absolute; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; top: 28%; z-index:2;"/>
-				<img src="button/ㄲ_1.png" id="btn2" width="4.06%" height="94%" alt=""style="position: absolute; left: 4.56%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 4.56%; top: 28%; z-index:2;"/>
-				<img src="button/ㄴ_1.png" id="btn3" width="4.06%" height="94%" alt=""style="position: absolute; left: 9.12%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 9.12%; top: 28%; z-index:2;"/>
-				<img src="button/ㄷ_1.png" id="btn4" width="4.06%" height="94%" alt=""style="position: absolute; left: 13.68%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 13.68%; top: 28%; z-index:2;"/>
-				<img src="button/ㄸ_1.png" id="btn5" width="4.06%" height="94%" alt=""style="position: absolute; left: 18.24%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 18.24%; top: 28%; z-index:2;"/>
-				<img src="button/ㄹ_1.png" id="btn6" width="4.06%" height="94%" alt=""style="position: absolute; left: 22.8%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 22.8%; top: 28%; z-index:2;"/>
-				<img src="button/ㅁ_1.png" id="btn7" width="4.06%" height="94%" alt=""style="position: absolute; left: 27.36%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 27.36%; top: 28%; z-index:2;"/>
-				<img src="button/ㅂ_1.png" id="btn8" width="4.06%" height="94%" alt=""style="position: absolute; left: 31.92%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 31.92%; top: 28%; z-index:2;"/>
-				<img src="button/ㅃ_1.png" id="btn9" width="4.06%" height="94%" alt=""style="position: absolute; left: 36.48%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 36.48%; top: 28%; z-index:2;"/>
-				<img src="button/ㅅ_1.png" id="btn10" width="4.06%" height="94%" alt=""style="position: absolute; left: 41.04%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 41.04%; top: 28%; z-index:2;"/>
-				<img src="button/ㅆ_1.png" id="btn11" width="4.06%" height="94%" alt=""style="position: absolute; left: 45.6%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 45.6%; top: 28%; z-index:2;"/>
-				<img src="button/ㅇ_1.png" id="btn12" width="4.06%" height="94%" alt=""style="position: absolute; left: 50.16%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 50.16%; top: 28%; z-index:2;"/>
-				<img src="button/ㅈ_1.png" id="btn13" width="4.06%" height="94%" alt=""style="position: absolute; left: 54.72%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 54.72%; top: 28%; z-index:2;"/>
-				<img src="button/ㅉ_1.png" id="btn14" width="4.06%" height="94%" alt=""style="position: absolute; left: 59.28%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 59.28%; top: 28%; z-index:2;"/>
-				<img src="button/ㅊ_1.png" id="btn15" width="4.06%" height="94%" alt=""style="position: absolute; left: 63.84%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 63.84%; top: 28%; z-index:2;"/>
-				<img src="button/ㅋ_1.png" id="btn16" width="4.06%" height="94%" alt=""style="position: absolute; left: 68.4%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 68.4%; top: 28%; z-index:2;"/>
-				<img src="button/ㅌ_1.png" id="btn17" width="4.06%" height="94%" alt=""style="position: absolute; left: 72.96%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 72.96%; top: 28%; z-index:2;"/>
-				<img src="button/ㅍ_1.png" id="btn18" width="4.06%" height="94%" alt=""style="position: absolute; left: 77.52%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 77.52%; top: 28%; z-index:2;"/>
-				<img src="button/ㅎ_1.png" id="btn19" width="4.06%" height="94%" alt=""style="position: absolute; left: 82.08%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 82.08%; top: 28%; z-index:2;"/>
-				<img src="button/점_1.png"  id="btn20" width="4.06%" height="94%" alt=""style="position: absolute; left: 86.64%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 86.64%; top: 28%; z-index:2;"/>
-				<img src="button/ㅡ_1.png" id="btn21" width="4.06%" height="94%" alt=""style="position: absolute; left: 91.2%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 91.2%; top: 28%; z-index:2;"/>
-				<img src="button/ㅣ_1.png" id="btn22" width="4.06%" height="94%" alt=""style="position: absolute; left: 95.76%; top: 20%;"/>
-				<img src="button/하단버튼 그림자.png" width="4.06%" height="94%" alt=""style="position: absolute; left: 95.76%; top: 28%; z-index:2;"/>
-			  </div>
-		  
-			  <div>
-				<img src="button/ㄱ_2.png" id="btn1_1" width="4.06%" height="94%" alt=""style="display:none; position: absolute; top: 20%;"/>
-				<img src="button/ㄲ_2.png" id="btn1_2" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 4.56%; top: 20%;"/>
-				<img src="button/ㄴ_2.png" id="btn1_3" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 9.12%; top: 20%;"/>
-				<img src="button/ㄷ_2.png" id="btn1_4" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 13.68%; top: 20%;"/>
-				<img src="button/ㄸ_2.png" id="btn1_5" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 18.24%; top: 20%;"/>
-				<img src="button/ㄹ_2.png" id="btn1_6" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 22.8%; top: 20%;"/>
-				<img src="button/ㅁ_2.png" id="btn1_7" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 27.36%; top: 20%;"/>
-				<img src="button/ㅂ_2.png" id="btn1_8" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 31.92%; top: 20%;"/>
-				<img src="button/ㅃ_2.png" id="btn1_9" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 36.48%; top: 20%;"/>
-				<img src="button/ㅅ_2.png" id="btn1_10" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 41.04%; top: 20%;"/>
-				<img src="button/ㅆ_2.png" id="btn1_11" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 45.6%; top: 20%;"/>
-				<img src="button/ㅇ_2.png" id="btn1_12" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 50.16%; top: 20%;"/>
-				<img src="button/ㅈ_2.png" id="btn1_13" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 54.72%; top: 20%;"/>
-				<img src="button/ㅉ_2.png" id="btn1_14" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 59.28%; top: 20%;"/>
-				<img src="button/ㅊ_2.png" id="btn1_15" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 63.84%; top: 20%;"/>
-				<img src="button/ㅋ_2.png" id="btn1_16" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 68.4%; top: 20%;"/>
-				<img src="button/ㅌ_2.png" id="btn1_17" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 72.96%; top: 20%;"/>
-				<img src="button/ㅍ_2.png" id="btn1_18" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 77.52%; top: 20%;"/>
-				<img src="button/ㅎ_2.png" id="btn1_19" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 82.08%; top: 20%;"/>
-				<img src="button/점_2.png"  id="btn1_20" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 86.64%; top: 20%;"/>
-				<img src="button/ㅡ_2.png" id="btn1_21" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 91.2%; top: 20%;"/>
-				<img src="button/ㅣ_2.png" id="btn1_22" width="4.06%" height="94%" alt=""style="display:none; position: absolute; left: 95.76%; top: 20%;"/>
-			  </div>
-		</div>
-	</div>
-	<!--오른쪽-->
-	<div style="position:absolute;width: 19%; height:100%; left:81%;">
-		<img class="b1" src="images/원리설명.png" width="25%" height="10%" alt="" style="position:absolute;z-index:1; left: 15%; bottom: 83%;"/>
-		<img class="b2" src="images/스토아팜.png" width="25%" height="10%" alt="" style="position:absolute;z-index:1; left: 15%; bottom: 70%;"/>
-		<img src="images/힙세종.png" width="45%" height="45%" alt="" style="position:absolute;z-index:1; left: 5%; bottom: -2.5%;"/>
-	</div>
-</div>
-<!--하단-->
-<div style="position:absolute;width: 100%; height:55%; top:43.5%;">
-	<img src="images/하단문구.png" width="22%" height="5%" alt="" style="position:absolute;z-index:1; left: 39%; top: 2%;"/>
-</div>
-<a id="target" style="display: none;z-index:4;"></a>
+<body class="container">
+  <header class="site-header site-header--generator">
+    <div class="site-header__inner">
+      <a class="site-brand brand-wordmark" href="index.html" aria-label="K-Code Art 홈">
+        <span class="brand-title">K-Code Art</span>
+        <span class="brand-subtitle">The Generative Code of Hangul</span>
+      </a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a href="principle.html">원리</a>
+        <a href="https://smartstore.naver.com/hggbs" target="_blank" rel="noopener noreferrer">구매</a>
+      </nav>
+    </div>
+  </header>
 
-<style>
- * {
-  font-family: Arial, Helvetica, sans-serif;
-}
+  <main class="studio-shell">
+    <section class="style-section" aria-labelledby="style-heading">
+      <p class="style-tooltip" role="tooltip"><span aria-hidden="true">✦</span>어떤 모양으로 한글을 표현해볼까요?</p>
+      <div class="style-toolbar">
+        <h1 id="style-heading">그림꼴</h1>
+        <div class="style-tabs" role="tablist" aria-label="그림꼴 선택"></div>
+      </div>
+      <select id="style_kind" class="selet_font native-style-select" title="그림꼴 선택" aria-hidden="true" tabindex="-1">
+        <option value="0">색동</option>
+        <option value="1">사각 조각보</option>
+        <option value="2">팔각 조각보</option>
+        <option value="3">원형 조각보</option>
+        <option value="4">물수제비</option>
+        <option value="5">한울림</option>
+        <option value="6">입방체</option>
+        <option value="7">단청</option>
+        <option value="8">만화경</option>
+        <option value="9">세모</option>
+      </select>
+    </section>
 
-select::-ms-expand{ display:none /* 화살표 없애기 for IE10, 11*/ }
-textarea::-ms-clear{ display:none /* 화살표 없애기 for IE10, 11*/ }
+    <div class="studio-grid">
+      <section class="creation-column" aria-label="한글 그림 만들기">
+        <div class="canvas-frame">
+          <img class="img_screen canvas-measure" src="images/한글창.png" alt="">
+          <div id="captureArea">
+            <div class="canvas-empty" aria-hidden="true">
+              <span>한글을 입력하면 그림이 됩니다</span>
+            </div>
+            <div class="result2"></div>
+            <p class="result" id="t_test"></p>
+          </div>
+        </div>
 
-textarea:focus {
-  outline: none;
-}
-button:focus {
-  outline: none;
-}
-input:focus {
-  outline: none;
-}
+      </section>
 
-	#screenshot_mask {
+      <aside class="control-panel">
+        <div>
+          <p class="panel-label">선택한 그림꼴</p>
+          <p class="selected-style-name">색동</p>
+          <figure class="style-preview" data-style="0">
+            <div class="style-preview__stage">
+              <img class="style-preview__image" src="색동.png" alt="색동 예시 이미지">
+              <span class="style-preview__fallback" aria-hidden="true">ㄱ</span>
+            </div>
+          </figure>
+          <p class="panel-description">입력한 한글의 소리와 구조가 선택한 그림꼴로 표현됩니다.</p>
+        </div>
+        <button id="capture" class="save-button" type="button">이미지 저장</button>
+      </aside>
 
-  width: 100%;
+      <div class="input-shell">
+        <label for="t">한글 입력</label>
+        <div class="input-row">
+          <textarea class="input" id="t" name="fname" rows="2" maxlength="16"
+            placeholder="한글을 입력하세요" wrap="VIRTUAL" spellcheck="false"></textarea>
+          <p class="result3" title="총 글자수">0 <span>/ 16</span></p>
+        </div>
+      </div>
+    </div>
 
-  height: 100%;
+    <section class="jamo-section" aria-label="자음과 모음 색상">
+      <div class="jamo-scroll" aria-label="자음과 모음 색상 목록">
+        <div class="jamo-item"><button id="btn1" type="button" data-char="ㄱ" title="ㄱ #1A7CBD">ㄱ</button><span id="btn1_1">ㄱ</span></div>
+        <div class="jamo-item"><button id="btn2" type="button" data-char="ㄲ" title="ㄲ #173349">ㄲ</button><span id="btn1_2">ㄲ</span></div>
+        <div class="jamo-item"><button id="btn3" type="button" data-char="ㄴ" title="ㄴ #A5665D">ㄴ</button><span id="btn1_3">ㄴ</span></div>
+        <div class="jamo-item"><button id="btn4" type="button" data-char="ㄷ" title="ㄷ #B81B22">ㄷ</button><span id="btn1_4">ㄷ</span></div>
+        <div class="jamo-item"><button id="btn5" type="button" data-char="ㄸ" title="ㄸ #4D242A">ㄸ</button><span id="btn1_5">ㄸ</span></div>
+        <div class="jamo-item"><button id="btn6" type="button" data-char="ㄹ" title="ㄹ #8E6C8D">ㄹ</button><span id="btn1_6">ㄹ</span></div>
+        <div class="jamo-item"><button id="btn7" type="button" data-char="ㅁ" title="ㅁ #8F9648">ㅁ</button><span id="btn1_7">ㅁ</span></div>
+        <div class="jamo-item"><button id="btn8" type="button" data-char="ㅂ" title="ㅂ #F6B71C">ㅂ</button><span id="btn1_8">ㅂ</span></div>
+        <div class="jamo-item"><button id="btn9" type="button" data-char="ㅃ" title="ㅃ #59441F">ㅃ</button><span id="btn1_9">ㅃ</span></div>
+        <div class="jamo-item"><button id="btn10" type="button" data-char="ㅅ" title="ㅅ #E9E0D9">ㅅ</button><span id="btn1_10">ㅅ</span></div>
+        <div class="jamo-item"><button id="btn11" type="button" data-char="ㅆ" title="ㅆ #847771">ㅆ</button><span id="btn1_11">ㅆ</span></div>
+        <div class="jamo-item"><button id="btn12" type="button" data-char="ㅇ" title="ㅇ #4D4D4D">ㅇ</button><span id="btn1_12">ㅇ</span></div>
+        <div class="jamo-item"><button id="btn13" type="button" data-char="ㅈ" title="ㅈ #F2F2F2">ㅈ</button><span id="btn1_13">ㅈ</span></div>
+        <div class="jamo-item"><button id="btn14" type="button" data-char="ㅉ" title="ㅉ #7F7F7F">ㅉ</button><span id="btn1_14">ㅉ</span></div>
+        <div class="jamo-item"><button id="btn15" type="button" data-char="ㅊ" title="ㅊ #D9D9D9">ㅊ</button><span id="btn1_15">ㅊ</span></div>
+        <div class="jamo-item"><button id="btn16" type="button" data-char="ㅋ" title="ㅋ #9CC9EA">ㅋ</button><span id="btn1_16">ㅋ</span></div>
+        <div class="jamo-item"><button id="btn17" type="button" data-char="ㅌ" title="ㅌ #EAB4C4">ㅌ</button><span id="btn1_17">ㅌ</span></div>
+        <div class="jamo-item"><button id="btn18" type="button" data-char="ㅍ" title="ㅍ #F2DD8C">ㅍ</button><span id="btn1_18">ㅍ</span></div>
+        <div class="jamo-item"><button id="btn19" type="button" data-char="ㅎ" title="ㅎ #202020">ㅎ</button><span id="btn1_19">ㅎ</span></div>
+        <div class="jamo-item"><button id="btn20" type="button" data-char="·" title="· #F0B800">·</button><span id="btn1_20">·</span></div>
+        <div class="jamo-item"><button id="btn21" type="button" data-char="ㅡ" title="ㅡ #0A4A87">ㅡ</button><span id="btn1_21">ㅡ</span></div>
+        <div class="jamo-item"><button id="btn22" type="button" data-char="ㅣ" title="ㅣ #99131A">ㅣ</button><span id="btn1_22">ㅣ</span></div>
+      </div>
+    </section>
 
-  position: fixed;
+    <div class="king-guide">
+      <img class="king-character" src="images/킹세종.png" alt="세종대왕 캐릭터">
+      <p class="king-speech" role="status" aria-live="polite"></p>
+    </div>
+    <footer class="site-footer">Copyright 2026. 메타세종. All Rights Reserved.</footer>
+  </main>
 
-  top: 0px;
-
-  left: 0px;
-
-  display: block;
-
-  opacity: 0.3;
-
-  text-align: center;
-
-  box-sizing: border-box;
-
-  z-index: 2147483647;
-
-  border-color: black;
-
-  border-style: solid;
-
-}
-
-#screenshot_focus:before,#screenshot_focus:after{
-
-  border:none !important;
-
-  content:"" !important;
-
-  height:100% !important;
-
-  position:absolute !important;
-
-  width:100% !important
-
-}
-
-#screenshot_focus:before{
-
-  border-right:1px solid white !important;
-
-  border-bottom:1px solid white !important;
-
-  left:-100% !important;
-
-  top:-100% !important
-
-}
-
-#screenshot_focus:after{
-
-  border-top:1px solid white !important;
-
-  border-left:1px solid white !important;
-
-  left:0 !important;
-
-  top:0 !important
-
-}
-
-#screenshot_focus{
-
-  height:100% !important;
-
-  position:fixed !important;
-
-  width:100% !important;
-
-  z-index:2147483648 !important
-
-}
-.custom-select select {
-  display: none; /*hide original SELECT element:*/
-}
-
-.select-items div:hover, .same-as-selected {
-  background-color: #1290ff;
-}
-.select-selected {
-  background-color: rgba(0, 0, 0, 0);
-}
-</style>
-
-
-<script>
-// 모바일 여부
-var isMobile = false;
- 
-// PC 환경
-var filter = "win16|win32|win64|mac|macintel";
-if (navigator.platform){
-	isMobile = filter.indexOf(navigator.platform.toLowerCase()) < 0;
-}
-if(isMobile == true){
-	if(navigator.userAgent.includes("iPad") == false){
-		location.href = "m/index.html";
-	}
-}
-if(navigator.userAgent.toLowerCase().indexOf('trident') > 0){
-	$("#style_kind").css('padding-left','5%');
-
-}else if(navigator.userAgent.toLowerCase().indexOf('trident') == -1){
-	$(".input").focus();
-}
-{
-		$("#capture").on('click', function(e) {
-		if($("textarea[name=fname]").val() =='')
-		{
-			alert("내용을 입력하세요");	
-			return false;
-		}
-		var temp_t = $("textarea[name=fname]").val();
-		var capture_size = $("#captureArea").width();
-		var capture_scale = 4000/capture_size;
-		var capture_font = capture_size/40;
-		window.scrollTo(0,0);
-		$('.result').css('font-size',capture_font);
-		$('.result').css('display','block');
-		html2canvas(document.getElementById("captureArea"),{
-			scale: capture_scale,
-			allowTaint: true,
-			logging: true,
-			letterRendering: 1,
-			useCORS: true
-		}).then(function(canvas) {
-		if (navigator.msSaveBlob) {
-			var blob = canvas.msToBlob();
-			return navigator.msSaveBlob(blob, temp_t+'.jpg');
-		}else{
-			var img = new Image();
-			img.crossOrigin = "Anonymous";
-			img.id = "getshot";
-			img.src = canvas.toDataURL("image/jpeg");
-			document.body.appendChild(img);
-			var el = document.getElementById("target");
-			el.crossOrigin = "Anonymous";
-			el.href = getshot.src;
-			el.download = temp_t+'.jpg';
-			el.click();
-			document.body.removeChild(img);
-		}
-		$('.result').css('display','none');
-		});
-	});
-}
-var b_box = false;
-$("#down_box").hide();
-$("#down_btn").on('click', function(e) {  
-	if(b_box == true)
-	{
-		$("#down_box").hide();
-		b_box = false;
-	}else
-	{
-		$("#down_box").show();
-		b_box = true;
-	}
-});
-$('.b1').hover(function(e){
-	$(this).attr("src", "images/원리설명 마우스온.png");
-	}, function(){
-	$(this).attr("src", "images/원리설명.png");
-});
-$(".b2").hover(function(e){
-	$(this).attr("src", "images/스토아팜 마우스온.png");
-	}, function(){
-	$(this).attr("src", "images/스토아팜.png");
-});
-//여기 바꾸면 되요.
-$('.b1').click(function(e){
-	location = "https://metasejong.kr/";
-});
-$(".b2").click(function(e){
-	location = "https://smartstore.naver.com/hggbs";
-});
-var x, i, j, selElmnt, a, b, c;
-/*look for any elements with the class "custom-select":*/
-x = document.getElementsByClassName("custom-select");
-for (i = 0; i < x.length; i++) {
-  selElmnt = x[i].getElementsByTagName("select")[0];
-  /*for each element, create a new DIV that will act as the selected item:*/
-  a = document.createElement("DIV");
-  a.setAttribute("class", "select-selected");
-  a.addEventListener("click", function(e) {
-      /*when the select box is clicked, close any other select boxes,
-      and open/close the current select box:*/
-      e.stopPropagation();
-      closeAllSelect(this);
-      this.nextSibling.classList.toggle("select-hide");
-      this.classList.toggle("select-arrow-active");
-    });
-}
-$(".check_btn").on('click', function(e) {
-	var value = document.getElementById("style_kind").value;
-	// alert(value);
-	// $("#style_kind").val(value).trigger('change');
-});
-
-function closeAllSelect(elmnt) {
-  /*a function that will close all select boxes in the document,
-  except the current select box:*/
-  var x, y, i, arrNo = [];
-  x = document.getElementsByClassName("select-items");
-  y = document.getElementsByClassName("select-selected");
-  for (i = 0; i < y.length; i++) {
-    if (elmnt == y[i]) {
-      arrNo.push(i)
-    } else {
-      y[i].classList.remove("select-arrow-active");
-    }
-  }
-  for (i = 0; i < x.length; i++) {
-    if (arrNo.indexOf(i)) {
-      x[i].classList.add("select-hide");
-    }
-  }
-}
-/*if the user clicks anywhere outside the select box,
-then close all select boxes:*/
-document.addEventListener("click", closeAllSelect);
-</script>
-
-
-<style>
-/* 툴팁 스타일 */
-.color-tooltip {
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: 'Noto Sans CJK', sans-serif;
-  pointer-events: none;
-  z-index: 10000;
-  display: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-.color-tooltip-swatch {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 3px;
-  margin-left: 8px;
-  vertical-align: middle;
-  border: 2px solid rgba(255,255,255,0.3);
-}
-</style>
-
-<script>
-// 색상 매핑 정보
-const colorMapping = {
-  'btn1': { char: 'ㄱ', color: '#1A7CBD' },
-  'btn2': { char: 'ㄲ', color: '#173349' },
-  'btn3': { char: 'ㄴ', color: '#a5665d' },
-  'btn4': { char: 'ㄷ', color: '#b81b22' },
-  'btn5': { char: 'ㄸ', color: '#4d242a' },
-  'btn6': { char: 'ㄹ', color: '#8e6c8d' },
-  'btn7': { char: 'ㅁ', color: '#8f9648' },
-  'btn8': { char: 'ㅂ', color: '#f6b71c' },
-  'btn9': { char: 'ㅃ', color: '#59441f' },
-  'btn10': { char: 'ㅅ', color: '#e9e0d9' },
-  'btn11': { char: 'ㅆ', color: '#847771' },
-  'btn12': { char: 'ㅇ', color: '#4d4d4d' },
-  'btn13': { char: 'ㅈ', color: '#f2f2f2' },
-  'btn14': { char: 'ㅉ', color: '#7f7f7f' },
-  'btn15': { char: 'ㅊ', color: '#d9d9d9' },
-  'btn16': { char: 'ㅋ', color: '#9cc9ea' },
-  'btn17': { char: 'ㅌ', color: '#eab4c4' },
-  'btn18': { char: 'ㅍ', color: '#f2dd8c' },
-  'btn19': { char: 'ㅎ', color: '#202020' },
-  'btn20': { char: '·', color: '#f0b800' },
-  'btn21': { char: 'ㅡ', color: '#0A4A87' },
-  'btn22': { char: 'ㅣ', color: '#99131a' }
-};
-
-// 툴팁 엘리먼트 생성
-const tooltip = document.createElement('div');
-tooltip.className = 'color-tooltip';
-document.body.appendChild(tooltip);
-
-// 각 버튼에 호버 이벤트 추가
-Object.keys(colorMapping).forEach(btnId => {
-  const btn = document.getElementById(btnId);
-  if (btn) {
-    btn.addEventListener('mouseenter', function(e) {
-      const info = colorMapping[btnId];
-      tooltip.innerHTML = info.char + ' <span class="color-tooltip-swatch" style="background-color: ' + info.color + ';"></span> ' + info.color.toUpperCase();
-      tooltip.style.display = 'block';
-    });
-    
-    btn.addEventListener('mousemove', function(e) {
-      tooltip.style.left = (e.pageX + 15) + 'px';
-      tooltip.style.top = (e.pageY + 15) + 'px';
-    });
-    
-    btn.addEventListener('mouseleave', function() {
-      tooltip.style.display = 'none';
-    });
-  }
-});
-</script>
-
-
-<style>
-/* 툴팁 스타일 */
-.color-tooltip {
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: 'Noto Sans CJK', sans-serif;
-  pointer-events: none;
-  z-index: 10000;
-  display: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-.color-tooltip-swatch {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 3px;
-  margin-left: 8px;
-  vertical-align: middle;
-  border: 2px solid rgba(255,255,255,0.3);
-}
-</style>
-
-<script>
-// 색상 매핑 정보
-const colorMapping = {
-  'btn1': { char: 'ㄱ', color: '#1A7CBD' },
-  'btn2': { char: 'ㄲ', color: '#173349' },
-  'btn3': { char: 'ㄴ', color: '#a5665d' },
-  'btn4': { char: 'ㄷ', color: '#b81b22' },
-  'btn5': { char: 'ㄸ', color: '#4d242a' },
-  'btn6': { char: 'ㄹ', color: '#8e6c8d' },
-  'btn7': { char: 'ㅁ', color: '#8f9648' },
-  'btn8': { char: 'ㅂ', color: '#f6b71c' },
-  'btn9': { char: 'ㅃ', color: '#59441f' },
-  'btn10': { char: 'ㅅ', color: '#e9e0d9' },
-  'btn11': { char: 'ㅆ', color: '#847771' },
-  'btn12': { char: 'ㅇ', color: '#4d4d4d' },
-  'btn13': { char: 'ㅈ', color: '#f2f2f2' },
-  'btn14': { char: 'ㅉ', color: '#7f7f7f' },
-  'btn15': { char: 'ㅊ', color: '#d9d9d9' },
-  'btn16': { char: 'ㅋ', color: '#9cc9ea' },
-  'btn17': { char: 'ㅌ', color: '#eab4c4' },
-  'btn18': { char: 'ㅍ', color: '#f2dd8c' },
-  'btn19': { char: 'ㅎ', color: '#202020' },
-  'btn20': { char: '·', color: '#f0b800' },
-  'btn21': { char: 'ㅡ', color: '#0A4A87' },
-  'btn22': { char: 'ㅣ', color: '#99131a' }
-};
-
-// 툴팁 엘리먼트 생성
-const tooltip = document.createElement('div');
-tooltip.className = 'color-tooltip';
-document.body.appendChild(tooltip);
-
-// 각 버튼에 호버 이벤트 추가
-Object.keys(colorMapping).forEach(btnId => {
-  const btn = document.getElementById(btnId);
-  if (btn) {
-    btn.addEventListener('mouseenter', function(e) {
-      const info = colorMapping[btnId];
-      tooltip.innerHTML = info.char + ' <span class="color-tooltip-swatch" style="background-color: ' + info.color + ';"></span> ' + info.color.toUpperCase();
-      tooltip.style.display = 'block';
-    });
-    
-    btn.addEventListener('mousemove', function(e) {
-      tooltip.style.left = (e.pageX + 15) + 'px';
-      tooltip.style.top = (e.pageY + 15) + 'px';
-    });
-    
-    btn.addEventListener('mouseleave', function() {
-      tooltip.style.display = 'none';
-    });
-  }
-});
-</script>
-
+  <a id="target" hidden></a>
+  <script src="modern-ui.js"></script>
 </body>
 </html>

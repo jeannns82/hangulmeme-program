@@ -14,6 +14,7 @@
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="c.css">
+<link rel="stylesheet" href="../navigation.css">
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
@@ -35,6 +36,13 @@
   }
 </style>
 <body id="body" style="margin:0; background-color: #ECECEF;">
+  <header class="site-header site-header--mobile">
+    <a class="site-brand site-brand--text" href="../index.html">한글이 그리는 그림</a>
+    <nav class="site-nav" aria-label="주요 메뉴">
+      <a href="../principle.html">원리</a>
+      <a href="https://smartstore.naver.com/hggbs" target="_blank" rel="noopener noreferrer">구매</a>
+    </nav>
+  </header>
   <!-- <div style="overflow-y:auto;"> -->
   <div></div> 
   <!-- <div style="height:200px; width:100%;"><img id="topimg" src="images/bg_top.png" width="100%" height="100%"></div> -->
@@ -89,15 +97,7 @@
       <p class="result" id="t_test" style="font-family: 'Noto Serif KR', serif;font-size: 10px; width: 430px; text-align: center;color:rgb(178, 178, 178);position: relative; bottom:10px;"></p>
 			<!-- <p class="result" id="t_test" style="font-family: 'Noto Serif KR', serif;font-size: 10px; width: 430px; text-align: center;color:rgb(178, 178, 178); margin-bottom: 10px;"></p> -->
   </div>
-  <div style="background-image: url('images/bottom_bg.png'); width: 100%; height: 25vh; background-repeat: round;">
-    <!-- <img src="images/bottom_bg.png" style=" width:100%;"> -->
-    <a href="https://metasejong.kr/">
-      <img src="images/원리설명_모바일.png" href="http://hangulart.com/m/" style="float:left; width:140px; margin-top:2.5vh; margin-left: 5vh;">
-    </a>
-    <a href="https://smartstore.naver.com/hggbs">
-      <img src="images/스토어팜_모바일.png" href="http://hangulart.com/m/" style="float:right;width:140px; margin-top:2.5vh; margin-right:5vh;">
-    </a>
-  </div>
+  <div style="background-image: url('images/bottom_bg.png'); width: 100%; height: 25vh; background-repeat: round;"></div>
   <!-- <img src="images/prev.png" class="btn_prev"   alt="" style="position: absolute; height:10px; left: 164px; top: 187px; z-index: 14;" onclick="close_downbox();"/>
 	<img src="images/next.png" class="btn_next"   alt="" style="position: absolute; height:10px; left: 299px; top: 187px; z-index: 14;" onclick="close_downbox();"/> -->
 </div>

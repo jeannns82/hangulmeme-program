@@ -1,0 +1,135 @@
+.site-header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #202020;
+  font-family: "Noto Sans CJK", Arial, Helvetica, sans-serif;
+  z-index: 20;
+}
+
+.site-header--generator {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 8.5%;
+  padding: 0 48px;
+}
+
+.site-header--generator .site-brand {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.site-header--generator .site-nav {
+  grid-column: 3;
+  justify-self: end;
+  gap: clamp(32px, 2.5vw, 40px);
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-brand img {
+  display: block;
+  width: clamp(180px, 25vw, 480px);
+  height: auto;
+}
+
+.site-brand--text {
+  font-family: "Noto Serif KR", serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 30px);
+}
+
+.site-nav a {
+  position: relative;
+  display: inline-block;
+  padding: 10px 5px;
+  color: inherit;
+  font-size: clamp(13px, 0.95vw, 18px);
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.site-nav a::after {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  left: 5px;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.5);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: #666;
+}
+
+.site-nav a:hover::after,
+.site-nav a:focus-visible::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.site-header--mobile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 58px;
+  padding: 8px 20px;
+}
+
+.site-header--mobile .site-nav {
+  gap: 12px;
+}
+
+.site-header--mobile .site-nav a {
+  font-size: 15px;
+}
+
+@media (max-width: 420px) {
+  .site-header--mobile {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .site-brand--text {
+    max-width: 55vw;
+    overflow: hidden;
+    font-size: 15px;
+    text-overflow: ellipsis;
+  }
+
+  .site-header--mobile .site-nav {
+    gap: 7px;
+  }
+
+  .site-header--mobile .site-nav a {
+    padding-right: 4px;
+    padding-left: 4px;
+    font-size: 14px;
+  }
+}
