@@ -1,12 +1,11 @@
 (function () {
   var select = document.getElementById("style_kind");
   var tabs = document.querySelector(".style-tabs");
-  var selectedName = document.querySelector(".selected-style-name");
   var input = document.getElementById("t");
   var count = document.querySelector(".result3");
-  var preview = document.querySelector(".style-preview");
-  var previewImage = document.querySelector(".style-preview__image");
-  var previewFallback = document.querySelector(".style-preview__fallback");
+  var preview = document.querySelector(".style-menu-preview");
+  var previewImage = document.querySelector(".style-menu-preview__image");
+  var previewFallback = document.querySelector(".style-menu-preview__fallback");
   var canvasFrame = document.querySelector(".canvas-frame");
   var kingGuide = document.querySelector(".king-guide");
   var kingSpeech = document.querySelector(".king-speech");
@@ -32,6 +31,15 @@
   function updateCount() {
     var length = input.value.replace(/ /g, "").length;
     count.innerHTML = length + " <span>/ 16</span>";
+  }
+
+  function resizeInput() {
+    var style = window.getComputedStyle(input);
+    var minHeight = parseFloat(style.getPropertyValue("--input-min-height")) || 58;
+    var maxHeight = parseFloat(style.getPropertyValue("--input-max-height")) || 118;
+    input.style.setProperty("--input-display-height", minHeight + "px");
+    var nextHeight = Math.min(maxHeight, Math.max(minHeight, input.scrollHeight + 1));
+    input.style.setProperty("--input-display-height", nextHeight + "px");
   }
 
   function getContrastColor(hex) {
@@ -108,6 +116,7 @@
   function handleInputReaction() {
     var hasText = Boolean(input.value.replace(/\s/g, ""));
     updateCount();
+    resizeInput();
     runCanvasReaction();
     if (hasText && !hasEnteredFirstCharacter) {
       hasEnteredFirstCharacter = true;
@@ -121,13 +130,30 @@
     }
   }
 
-  function updateStyleUI(shouldAnimate) {
-    var selectedOption = select.options[select.selectedIndex];
-    selectedName.textContent = selectedOption.text;
-    preview.dataset.style = select.value;
-    previewImage.alt = selectedOption.text + " 예시 이미지";
-    if (previewSources[select.value]) {
-      previewImage.src = previewSources[select.value];
+  function getStyleOption(value) {
+    return Array.prototype.find.call(select.options, function (option) {
+      return option.value === String(value);
+    });
+  }
+
+  function positionPreview(value) {
+    var tab = tabs.querySelector('.style-tab[data-value="' + value + '"]');
+    if (!tab) return;
+    var tabCenter = tab.offsetLeft - tabs.scrollLeft + (tab.offsetWidth / 2);
+    var previewLeft = tabCenter - (preview.offsetWidth / 2);
+    var maxLeft = Math.max(0, preview.parentElement.clientWidth - preview.offsetWidth);
+    preview.style.setProperty("--preview-x", Math.max(0, Math.min(previewLeft, maxLeft)) + "px");
+  }
+
+  function renderPreview(value, shouldAnimate) {
+    var option = getStyleOption(value);
+    if (!option) return;
+    preview.dataset.style = option.value;
+    preview.setAttribute("aria-label", option.text + " 그림꼴 미리보기");
+    positionPreview(option.value);
+    previewImage.alt = option.text + " 그림꼴 미리보기";
+    if (previewSources[option.value]) {
+      previewImage.src = previewSources[option.value];
       previewImage.hidden = false;
       previewFallback.hidden = true;
     } else {
@@ -136,7 +162,13 @@
       previewFallback.hidden = false;
     }
     if (shouldAnimate) {
-      restartClass(preview, "is-switching", 460);
+      restartClass(preview, "is-switching", 360);
+    }
+  }
+
+  function updateStyleUI(shouldAnimate) {
+    renderPreview(select.value, shouldAnimate);
+    if (shouldAnimate) {
       showKingSpeech("다른 모습으로 바뀌었어요.");
     }
     tabs.querySelectorAll(".style-tab").forEach(function (tab) {
@@ -153,11 +185,53 @@
     tab.dataset.value = option.value;
     tab.textContent = option.text;
     tab.addEventListener("click", function () {
+      if (tabs.scrollWidth > tabs.clientWidth) {
+        var targetScroll = Math.max(0, tab.offsetLeft - tabs.offsetLeft);
+        tabs.scrollTo({
+          left: targetScroll,
+          behavior: reduceMotion ? "auto" : "smooth"
+        });
+      }
       select.value = option.value;
       $(select).trigger("change");
       updateStyleUI(true);
     });
+    tab.addEventListener("pointerenter", function () {
+      renderPreview(option.value, true);
+    });
+    tab.addEventListener("focus", function () {
+      renderPreview(option.value, true);
+    });
     tabs.appendChild(tab);
+  });
+
+  tabs.addEventListener("pointerleave", function () {
+    renderPreview(select.value, true);
+  });
+  tabs.addEventListener("focusout", function (event) {
+    if (!tabs.contains(event.relatedTarget)) {
+      renderPreview(select.value, true);
+    }
+  });
+  tabs.addEventListener("keydown", function (event) {
+    var tabItems = Array.prototype.slice.call(tabs.querySelectorAll(".style-tab"));
+    var currentIndex = tabItems.indexOf(document.activeElement);
+    if (currentIndex < 0) return;
+    var nextIndex = currentIndex;
+    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabItems.length;
+    else if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabItems.length) % tabItems.length;
+    else if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = tabItems.length - 1;
+    else return;
+    event.preventDefault();
+    tabItems[nextIndex].focus();
+  });
+  tabs.addEventListener("scroll", function () {
+    positionPreview(preview.dataset.style || select.value);
+  }, { passive: true });
+  window.addEventListener("resize", function () {
+    positionPreview(preview.dataset.style || select.value);
+    resizeInput();
   });
 
   select.addEventListener("change", function () {
@@ -169,12 +243,14 @@
     showKingSpeech("한글을 입력해 보세요.");
   });
   input.addEventListener("keyup", handleInputReaction);
+  input.addEventListener("input", resizeInput);
   previewImage.addEventListener("error", function () {
     previewImage.hidden = true;
     previewFallback.hidden = false;
   });
   updateStyleUI(false);
   updateCount();
+  resizeInput();
   applyJamoColors();
 
   document.querySelectorAll(".jamo-item button").forEach(function (button) {

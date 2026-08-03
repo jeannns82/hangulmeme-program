@@ -35,6 +35,12 @@
         <h1 id="style-heading">그림꼴</h1>
         <div class="style-tabs" role="tablist" aria-label="그림꼴 선택"></div>
       </div>
+      <figure class="style-menu-preview" data-style="0" aria-live="polite" aria-label="색동 그림꼴 미리보기">
+        <div class="style-menu-preview__stage">
+          <img class="style-menu-preview__image" src="색동.png" alt="색동 그림꼴 미리보기">
+          <span class="style-menu-preview__fallback" aria-hidden="true">ㄱ</span>
+        </div>
+      </figure>
       <select id="style_kind" class="selet_font native-style-select" title="그림꼴 선택" aria-hidden="true" tabindex="-1">
         <option value="0">색동</option>
         <option value="1">사각 조각보</option>
@@ -50,6 +56,20 @@
     </section>
 
     <div class="studio-grid">
+      <div class="input-shell">
+        <label for="t">한글 입력</label>
+        <div class="input-decoration" aria-hidden="true"></div>
+        <div class="input-content">
+          <div class="input-row">
+            <textarea class="input" id="t" name="fname" rows="3" maxlength="16"
+              placeholder="한글을 입력하세요" wrap="VIRTUAL" spellcheck="false"></textarea>
+            <p class="result3" title="총 글자수">0 <span>/ 16</span></p>
+          </div>
+          <p class="input-guide">입력한 한글이 오른쪽 캔버스에서 그림으로 펼쳐집니다.</p>
+        </div>
+        <button id="capture" class="save-button" type="button">이미지 저장</button>
+      </div>
+
       <section class="creation-column" aria-label="한글 그림 만들기">
         <div class="canvas-frame">
           <img class="img_screen canvas-measure" src="images/한글창.png" alt="">
@@ -61,32 +81,7 @@
             <p class="result" id="t_test"></p>
           </div>
         </div>
-
       </section>
-
-      <aside class="control-panel">
-        <div>
-          <p class="panel-label">선택한 그림꼴</p>
-          <p class="selected-style-name">색동</p>
-          <figure class="style-preview" data-style="0">
-            <div class="style-preview__stage">
-              <img class="style-preview__image" src="색동.png" alt="색동 예시 이미지">
-              <span class="style-preview__fallback" aria-hidden="true">ㄱ</span>
-            </div>
-          </figure>
-          <p class="panel-description">입력한 한글의 소리와 구조가 선택한 그림꼴로 표현됩니다.</p>
-        </div>
-        <button id="capture" class="save-button" type="button">이미지 저장</button>
-      </aside>
-
-      <div class="input-shell">
-        <label for="t">한글 입력</label>
-        <div class="input-row">
-          <textarea class="input" id="t" name="fname" rows="2" maxlength="16"
-            placeholder="한글을 입력하세요" wrap="VIRTUAL" spellcheck="false"></textarea>
-          <p class="result3" title="총 글자수">0 <span>/ 16</span></p>
-        </div>
-      </div>
     </div>
 
     <section class="jamo-section" aria-label="자음과 모음 색상">
@@ -124,6 +119,6 @@
   </main>
 
   <a id="target" hidden></a>
-  <script src="modern-ui.js"></script>
+  <script src="modern-ui.js?v=20260803-input-wrap"></script>
 </body>
 </html>
