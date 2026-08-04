@@ -2,8 +2,6 @@
   var select = document.getElementById("style_kind");
   var tabs = document.querySelector(".style-tabs");
   var input = document.getElementById("t");
-  var inputShell = document.querySelector(".input-shell");
-  var colorArchiveCta = document.querySelector(".color-archive__cta");
   var count = document.querySelector(".result3");
   var preview = document.querySelector(".style-menu-preview");
   var previewImage = document.querySelector(".style-menu-preview__image");
@@ -15,7 +13,6 @@
   var canvasTimer;
   var completionTimer;
   var speechTimer;
-  var placeholderTimer;
   var hasFocusedInput = false;
   var hasEnteredFirstCharacter = false;
   var previewSources = {
@@ -247,32 +244,6 @@
   });
   input.addEventListener("keyup", handleInputReaction);
   input.addEventListener("input", resizeInput);
-  if (colorArchiveCta) {
-    colorArchiveCta.addEventListener("click", function () {
-      var inputShellRect = inputShell.getBoundingClientRect();
-      var inputIsOutsideViewport = inputShellRect.top < 0 || inputShellRect.bottom > window.innerHeight;
-
-      if (inputIsOutsideViewport) {
-        inputShell.scrollIntoView({
-          behavior: reduceMotion ? "auto" : "smooth",
-          block: "center"
-        });
-      }
-
-      try {
-        input.focus({ preventScroll: true });
-      } catch (error) {
-        input.focus();
-      }
-
-      restartClass(inputShell, "is-cta-cued", 680);
-      window.clearTimeout(placeholderTimer);
-      input.placeholder = "이름을 입력해 보세요";
-      placeholderTimer = window.setTimeout(function () {
-        input.placeholder = "한글을 입력하세요";
-      }, 2400);
-    });
-  }
   previewImage.addEventListener("error", function () {
     previewImage.hidden = true;
     previewFallback.hidden = false;
