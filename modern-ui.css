@@ -306,6 +306,10 @@ select {
   .canvas-empty span,
   .input-decoration::before,
   .input-decoration::after,
+  .input-shell.is-cta-cued,
+  .color-archive__cta::before,
+  .color-archive__cta:hover,
+  .color-archive__cta:focus-visible,
   .canvas-frame.is-revealing .result2,
   .style-menu-preview.is-switching .style-menu-preview__image,
   .style-menu-preview.is-switching .style-menu-preview__stage::after,
@@ -315,6 +319,9 @@ select {
 
   .style-tab,
   .style-tab::after,
+  .color-archive__cta,
+  .color-archive__cta::before,
+  .color-archive__cta span:last-child,
   .king-speech {
     transition-duration: 0.01ms;
   }
@@ -322,6 +329,14 @@ select {
   .save-button:hover,
   .save-button:focus-visible {
     animation: none;
+  }
+
+  .color-archive__cta::before {
+    animation: none;
+    background-position: 50% 50%;
+    filter: saturate(1.02);
+    opacity: 0.78;
+    transform: none;
   }
 }
 
@@ -490,12 +505,20 @@ select {
   min-width: 0;
 }
 
-.color-archive {
+.color-archive-column {
   grid-column: 5;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
+  gap: 12px;
   min-width: 0;
   height: var(--canvas-size);
+}
+
+.color-archive {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
   overflow: hidden;
   padding: 14px 9px 9px 13px;
   border: 1px solid rgba(255, 255, 255, 0.72);
@@ -509,12 +532,158 @@ select {
 }
 
 .color-archive h2 {
-  margin: 0 4px 11px;
+  margin: 0 4px 8px;
   color: #4e5753;
   font-family: "Noto Serif KR", serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
+}
+
+.color-archive__cta {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.32)) padding-box,
+    linear-gradient(105deg, rgba(0, 130, 203, 0.58), rgba(145, 110, 147, 0.46), rgba(255, 189, 0, 0.52), rgba(242, 184, 202, 0.52), rgba(0, 130, 203, 0.58)) border-box;
+  background-position: 0 0, 0% 50%;
+  background-size: 100% 100%, 220% 100%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  color: #3f4945;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  cursor: pointer;
+  overflow: hidden;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  transition: color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.color-archive__cta::before {
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: 7px;
+  background: linear-gradient(
+    118deg,
+    rgba(105, 188, 210, 0.35) 0%,
+    rgba(125, 201, 181, 0.31) 19%,
+    rgba(255, 255, 255, 0.5) 34%,
+    rgba(232, 196, 126, 0.34) 47%,
+    rgba(232, 145, 127, 0.31) 66%,
+    rgba(118, 195, 181, 0.33) 84%,
+    rgba(105, 188, 210, 0.35) 100%
+  );
+  background-position: 0% 50%;
+  background-size: 220% 170%;
+  content: "";
+  opacity: 0.78;
+  filter: saturate(1.08) contrast(1.025);
+  pointer-events: none;
+  transform: translate3d(-1.5%, 0, 0) scale(1.025);
+  transform-origin: center;
+  animation: color-cta-fill-drift 10.5s ease-in-out infinite alternate;
+  transition: filter 220ms ease, opacity 220ms ease;
+  will-change: background-position, opacity, transform;
+}
+
+.color-archive__cta > span {
+  position: relative;
+  z-index: 1;
+}
+
+.color-archive__cta span:last-child {
+  font-size: 14px;
+  transition: transform 160ms ease;
+}
+
+.color-archive__cta:hover,
+.color-archive__cta:focus-visible {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.25)) padding-box,
+    linear-gradient(105deg, rgba(0, 130, 203, 0.76), rgba(145, 110, 147, 0.6), rgba(255, 189, 0, 0.7), rgba(242, 184, 202, 0.68), rgba(0, 130, 203, 0.76)) border-box;
+  background-position: 0 0, 0% 50%;
+  background-size: 100% 100%, 220% 100%;
+  color: #222a27;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 5px 12px rgba(43, 59, 53, 0.055);
+  outline: none;
+  animation: color-cta-border-flow 520ms ease-out both;
+  transform: translateY(-1px);
+}
+
+.color-archive__cta:hover::before,
+.color-archive__cta:focus-visible::before {
+  opacity: 0.9;
+  animation-duration: 7.8s;
+  filter: saturate(1.18) contrast(1.05);
+}
+
+.color-archive__cta:hover span:last-child,
+.color-archive__cta:focus-visible span:last-child {
+  transform: translateX(2px);
+}
+
+.color-archive__cta:active {
+  transform: translateY(0);
+}
+
+@keyframes color-cta-border-flow {
+  from { background-position: 0 0, 0% 50%; }
+  to { background-position: 0 0, 100% 50%; }
+}
+
+@keyframes color-cta-fill-drift {
+  0% {
+    background-position: 0% 46%;
+    opacity: 0.7;
+    transform: translate3d(-1.5%, 0, 0) scale(1.025);
+  }
+  38% {
+    background-position: 42% 54%;
+    opacity: 0.86;
+    transform: translate3d(0.4%, -0.35px, 0) scale(1.04);
+  }
+  68% {
+    background-position: 72% 48%;
+    opacity: 0.76;
+    transform: translate3d(1.1%, 0.3px, 0) scale(1.03);
+  }
+  100% {
+    background-position: 100% 55%;
+    opacity: 0.84;
+    transform: translate3d(1.6%, 0, 0) scale(1.025);
+  }
+}
+
+.input-shell.is-cta-cued {
+  animation: input-cta-cue 620ms ease-out both;
+}
+
+@keyframes input-cta-cue {
+  0% {
+    border-color: rgba(255, 255, 255, 0.82);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 6px 22px rgba(0, 0, 0, 0.035);
+  }
+  42% {
+    border-color: rgba(91, 155, 165, 0.48);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.98), 0 0 0 3px rgba(91, 155, 165, 0.075), 0 8px 24px rgba(0, 0, 0, 0.04);
+  }
+  100% {
+    border-color: rgba(255, 255, 255, 0.82);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 6px 22px rgba(0, 0, 0, 0.035);
+  }
 }
 
 .color-archive__list {
@@ -1248,7 +1417,7 @@ textarea.input:focus {
 
   .studio-grid > .input-shell,
   .creation-column,
-  .color-archive {
+  .color-archive-column {
     grid-column: 1;
   }
 
@@ -1291,11 +1460,15 @@ textarea.input:focus {
     grid-row: 2;
   }
 
-  .color-archive {
+  .color-archive-column {
     grid-row: 3;
     width: var(--canvas-size);
-    height: 196px;
+    height: 240px;
     margin: 0 auto;
+    gap: 12px;
+  }
+
+  .color-archive {
     padding: 12px 9px 8px 12px;
   }
 

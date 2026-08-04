@@ -83,9 +83,13 @@
         </div>
       </section>
 
-      <aside class="color-archive" aria-labelledby="color-archive-title">
-        <h2 id="color-archive-title">한글의 색</h2>
-        <div class="color-archive__list" role="list" aria-label="K-CODE 한글 색상 목록">
+      <div class="color-archive-column">
+        <button class="color-archive__cta" type="button">
+          <span>내 이름의 색은?</span><span aria-hidden="true">→</span>
+        </button>
+        <aside class="color-archive" aria-labelledby="color-archive-title">
+          <h2 id="color-archive-title">한글의 색</h2>
+          <div class="color-archive__list" role="list" aria-label="K-CODE 한글 색상 목록">
           <div class="color-swatch" role="listitem" style="--swatch-color: #0082CB"><span class="color-swatch__chip"></span><span class="color-swatch__text"><strong>ㄱ</strong><span>가을 하늘</span></span></div>
           <div class="color-swatch" role="listitem" style="--swatch-color: #19334A"><span class="color-swatch__chip"></span><span class="color-swatch__text"><strong>ㄲ</strong><span>밤바다</span></span></div>
           <div class="color-swatch" role="listitem" style="--swatch-color: #AA685E"><span class="color-swatch__chip"></span><span class="color-swatch__text"><strong>ㄴ</strong><span>저녁 노을</span></span></div>
@@ -105,8 +109,9 @@
           <div class="color-swatch" role="listitem" style="--swatch-color: #F2B8CA"><span class="color-swatch__chip"></span><span class="color-swatch__text"><strong>ㅌ</strong><span>벚꽃</span></span></div>
           <div class="color-swatch" role="listitem" style="--swatch-color: #F8E38D"><span class="color-swatch__chip"></span><span class="color-swatch__text"><strong>ㅍ</strong><span>봄볕</span></span></div>
           <div class="color-swatch" role="listitem" style="--swatch-color: #202020"><span class="color-swatch__chip"></span><span class="color-swatch__text"><strong>ㅎ</strong><span>칠흑</span></span></div>
-        </div>
-      </aside>
+          </div>
+        </aside>
+      </div>
     </div>
 
     <section class="jamo-section" aria-label="자음과 모음 색상">
@@ -144,6 +149,6 @@
   </main>
 
   <a id="target" hidden></a>
-  <script src="modern-ui.js?v=20260803-input-wrap"></script>
+  <script src="modern-ui.js?v=20260804-color-cta"></script>
 </body>
 </html>
